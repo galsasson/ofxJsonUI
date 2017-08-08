@@ -46,7 +46,6 @@ namespace ofxJsonUI
 			refreshTextRect();
 			cache.bTextRectNeedsUpdate = false;
 		}
-
 	}
 
 	void Text::draw()
