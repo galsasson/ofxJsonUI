@@ -18,16 +18,20 @@ namespace ofxJsonUI
 	class Text : public Node
 	{
 	public:
-		Text(Json::Value& config);
-		void setup(Json::Value& config);
+		Text();
+		Text(Json::Value& styleJson);
+		void setStyle(Json::Value& styleJson);
+		void setText(const string& str);
+		string& getText() { return text; }
+		void updateSize();
 		virtual void update(float dt) override;
 		virtual void draw() override;
 		virtual void drawDebug() override;
 		virtual bool contains(const ofVec3f& p) override;
 
 	private:
-		struct config_t {
-			string text;
+		string text;
+		struct style_t {
 			float fontSize;
 			ofColor color;
 			string fontName;
@@ -36,14 +40,14 @@ namespace ofxJsonUI
 			ofxNanoVG::TextHorizontalAlign halign;
 			ofxNanoVG::TextVerticalAlign valign;
 			bool isHeb;
-		} conf;
+			int maxCharsPerLine;
+		} style;
 		struct cache_t {
-			bool bTextRectNeedsUpdate;
+			bool bSizeNeedsUpdate;
 			ofRectangle textRect;
 			float xpos;
 			float ypos;
 		} cache;
-		void refreshTextRect();
 		string toHebrewParagraph(const string& str, int maxCharsPerLine);
 	};
 }
