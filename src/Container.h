@@ -15,13 +15,14 @@ using namespace ofxInterface;
 
 namespace ofxJsonUI
 {
-	class Container : public Node
+	class Container : public AnimatableNode
 	{
 	public:
 		Container();
 		void setContent(Json::Value& cont);
 		Node* getNodeById(const string& id);
 		Container* getContainerById(const string& id);
+		float alpha;
 
 	private:
 		Node* root;

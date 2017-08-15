@@ -34,10 +34,7 @@ namespace ofxJsonUI
 	{
 		string styleName = ofxJsonParser::parseString(styleJson["style-name"]);
 		if (styleName != "") {
-			Json::Value style = ofxJsonUI::getStyle(styleName);
-			ofLogNotice("Text") << "style:\n"<< style;
-			ofxJsonParser::objectMerge(styleJson, style);
-			ofLogNotice("Text") << "styleJson:\n"<<styleJson;
+			ofxJsonParser::objectMerge(styleJson, ofxJsonUI::getStyle(styleName));
 		}
 
 		style.fontName = ofxJsonParser::parseString(styleJson["font"]);

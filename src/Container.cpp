@@ -14,6 +14,7 @@ namespace ofxJsonUI
 	{
 		bHaveContent = false;
 		pad = 128;
+		alpha = 1;
 		root = new Node();
 		root->setVisible(false);
 		addChild(root);
@@ -23,6 +24,7 @@ namespace ofxJsonUI
 	{
 		ofVec2f size = ofxJsonParser::parseVector(cont["size"]);
 		allocateFbo(size);
+		setSize(size);
 
 		Json::Value& elements = cont["elements"];
 		for (Json::Value& elem: elements) {
@@ -46,7 +48,7 @@ namespace ofxJsonUI
 	void Container::renderContents()
 	{
 		fbo.begin();
-		ofClear(128,0);
+		ofClear(255,0);
 		ofxNanoVG::one().beginFrame(fbo.getWidth(), fbo.getHeight(), 1);
 		ofPushMatrix();
 		ofTranslate(pad, pad);
@@ -63,13 +65,14 @@ namespace ofxJsonUI
 
 	void Container::update(float dt)
 	{
+		AnimatableNode::update(dt);
 		root->updateSubtreePostOrder(dt);
 		renderContents();
 	}
 
 	void Container::draw()
 	{
-		ofSetColor(255);
+		ofSetColor(255, alpha*255);
 		fbo.draw(-pad, -pad);
 	}
 }

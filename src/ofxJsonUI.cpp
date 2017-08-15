@@ -17,16 +17,30 @@ namespace ofxJsonUI
 			return NULL;
 		}
 
-		if (type == "text") {
+		if (type == "container") {
+			Container* c = new Container();
+			c->setName(ofxJsonParser::parseString(config["name"],"container"));
+			c->setContent(config);
+			return c;
+		}
+		else if (type == "text") {
 			Text* t = new Text();
+			t->setName(ofxJsonParser::parseString(config["name"],"text"));
 			t->setStyle(config);
 			t->setText(ofxJsonParser::parseString(config["text"]));
 			return t;
 		}
-		else if (type == "container") {
-			Container* c = new Container();
-			c->setContent(config);
-			return c;
+		else if (type == "image") {
+			Image* i = new Image();
+			i->setName(ofxJsonParser::parseString(config["name"],"image"));
+			i->setStyle(config);
+			return i;
+		}
+		else if (type == "video") {
+			Video* v = new Video();
+			v->setName(ofxJsonParser::parseString(config["name"],"video"));
+			v->setStyle(config);
+			return v;
 		}
 		else {
 			return NULL;

@@ -16,8 +16,11 @@
 #include "ofxJsonParser.h"
 
 // Components
+#include "AnimatableNode.h"
 #include "Container.h"
 #include "Text.h"
+#include "Image.h"
+#include "Video.h"
 
 using namespace ofxInterface;
 
