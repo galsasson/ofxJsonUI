@@ -23,7 +23,8 @@ using namespace ofxInterface;
 
 namespace ofxJsonUI
 {
-	static Node* create(Json::Value& config);
+	Node* create(Json::Value& config);
+	Json::Value getStyle(const string& name);
 }
 
 #endif /* ofxJsonUI_h */

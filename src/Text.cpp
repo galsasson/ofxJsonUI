@@ -32,7 +32,19 @@ namespace ofxJsonUI
 
 	void Text::setStyle(Json::Value& styleJson)
 	{
+		string styleName = ofxJsonParser::parseString(styleJson["style-name"]);
+		if (styleName != "") {
+			Json::Value style = ofxJsonUI::getStyle(styleName);
+			ofLogNotice("Text") << "style:\n"<< style;
+			ofxJsonParser::objectMerge(styleJson, style);
+			ofLogNotice("Text") << "styleJson:\n"<<styleJson;
+		}
+
 		style.fontName = ofxJsonParser::parseString(styleJson["font"]);
+		if (ofxNanoVG::one().getFont(style.fontName) == NULL) {
+			ofLogError("ofxJsonUI::Text") << "no such font: '"<<style.fontName<<"'";
+			return;
+		}
 		style.fontSize = ofxJsonParser::parseFloat(styleJson["size"]);
 		style.color = ofxJsonParser::parseColor(styleJson["color"], ofColor(255));
 		style.maxLineWidth = ofxJsonParser::parseFloat(styleJson["max-line-width"],-1);
@@ -134,6 +146,7 @@ namespace ofxJsonUI
 			cache.textRect = ofxNanoVG::one().getTextBounds(style.fontName, 0, 0, text, style.fontSize);
 		}
 		setSize(cache.textRect.width, cache.textRect.height);
+
 		cache.xpos = style.halign==ofxNanoVG::NVG_ALIGN_LEFT?0:style.halign==ofxNanoVG::NVG_ALIGN_CENTER?-0.5*getWidth():-1*getWidth();
 		cache.ypos = style.valign==ofxNanoVG::NVG_ALIGN_TOP?0:style.valign==ofxNanoVG::NVG_ALIGN_MIDDLE?-0.5*getHeight():-1*getHeight();
 
