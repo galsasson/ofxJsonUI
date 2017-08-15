@@ -169,8 +169,21 @@ namespace ofxJsonUI
 		vector<deque<unsigned int>> lines;
 		deque<unsigned int> currentLine;
 		for (auto& c: utf32line) {
-			currentLine.push_front(c);
 			chars++;
+			if (c == '(') {
+				currentLine.push_front(')');
+			}
+			else if (c == ')') {
+				currentLine.push_front('(');
+			}
+			else if (c == '\n') {
+				lines.push_back(currentLine);
+				chars=0;
+				currentLine.clear();
+			}
+			else {
+				currentLine.push_front(c);
+			}
 			if (c==' ') {
 				if (chars>=maxCharsPerLine) {
 					lines.push_back(currentLine);
