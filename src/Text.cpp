@@ -152,6 +152,7 @@ namespace ofxJsonUI
 
 	string Text::toHebrewParagraph(const string& str, int maxCharsPerLine)
 	{
+
 		if (maxCharsPerLine == -1) {
 			deque<unsigned int> utf32line;
 			// reverse
@@ -163,12 +164,26 @@ namespace ofxJsonUI
 		}
 
 		deque<unsigned int> utf32line;
+		deque<unsigned int> number;
+		unsigned int lastChar=0;
 		// convert to utf32
 		utf8::utf8to32(str.begin(), str.end(), back_inserter(utf32line));
 		int chars = 0;
 		vector<deque<unsigned int>> lines;
 		deque<unsigned int> currentLine;
 		for (auto& c: utf32line) {
+			// keep the orders of numbers
+			if ((c>='0' && c<='9') || c=='%' || (lastChar>='0' && lastChar<='9' && (c=='.' || c==',' || c=='-' || c=='+'))) {
+				number.push_back(c);
+				lastChar = c;
+				continue;
+			}
+			else if (number.size()>0) {
+				currentLine.insert(currentLine.begin(), number.begin(), number.end());
+				chars += number.size();
+				number.clear();
+			}
+
 			chars++;
 			if (c == '(') {
 				currentLine.push_front(')');
@@ -191,6 +206,7 @@ namespace ofxJsonUI
 					currentLine.clear();
 				}
 			}
+			lastChar = c;
 		}
 		if (currentLine.size() > 0) {
 			lines.push_back(currentLine);
