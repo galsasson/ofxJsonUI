@@ -54,7 +54,11 @@ namespace ofxJsonUI
 		ofTranslate(pad, pad);
 
 		root->setVisible(true);
+#ifdef GLM_SWIZZLE //this version of OF is using GLM for math ops
+		ofMultMatrix(glm::inverse(root->getGlobalTransformMatrix()));
+#else
 		ofMultMatrix(root->getGlobalTransformMatrix().getInverse());
+#endif
 		root->render();
 		root->setVisible(false);
 
