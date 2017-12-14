@@ -81,8 +81,8 @@ void AnimatableNode::update(float dt)
 		float prog = ofClamp(nodePositionAnimation.curve.calcAt(timeProg), 0, 1);
         setPosition(nodePositionAnimation.source.getInterpolated(nodePositionAnimation.target, prog));
         if (nodePositionAnimation.progress >= nodePositionAnimation.delay+nodePositionAnimation.duration) {
+			nodePositionAnimation.bActive = false;
 			nodePositionAnimation.onEnd();
-            nodePositionAnimation.bActive = false;
         }
     }
     
