@@ -1,13 +1,13 @@
 //
-//  Shape.h
+//  SVG.h
 //  maccabi-wall
 //
 //  Created by Gal Sasson on 8/8/17.
 //
 //
 
-#ifndef Shape_h
-#define Shape_h
+#ifndef SVG_h
+#define SVG_h
 
 #include "ofxJsonUI.h"
 
@@ -15,26 +15,30 @@ using namespace ofxInterface;
 
 namespace ofxJsonUI
 {
-	class Shape : public Node
+	class SVG : public Node
 	{
 	public:
-		Shape();
-		Shape(Json::Value& styleJson);
+		~SVG();
+		SVG();
+		SVG(Json::Value& styleJson);
 		void setStyle(Json::Value& styleJson);
-		void setShape(const string& str);
+		void setSVG(const string& svg);
 		virtual void update(float dt) override;
 		virtual void draw() override;
 
 	private:
 		struct style_t {
-			ofColor color;
-			ofColor tint;
+			bool bStroke;
+			ofColor strokeColor;
+			bool bFill;
+			ofColor fillColor;
 			ofVec2f size;
+			string units;
+			float dpi;
 		} style;
 		struct cache_t {
-			ofTexture* tex;
 			NSVGimage* svg;
 		} cache;
 	};
 }
-#endif /* Shape_h */
+#endif /* SVG_h */

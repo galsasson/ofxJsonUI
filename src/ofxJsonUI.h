@@ -21,6 +21,7 @@
 #include "Text.h"
 #include "Image.h"
 #include "Video.h"
+#include "SVG.h"
 
 using namespace ofxInterface;
 

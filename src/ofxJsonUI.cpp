@@ -42,6 +42,12 @@ namespace ofxJsonUI
 			v->setStyle(config);
 			return v;
 		}
+		else if (type == "svg") {
+			SVG* s = new SVG();
+			s->setName(ofxJsonParser::parseString(config["name"],"svg"));
+			s->setStyle(config);
+			return s;
+		}
 		else {
 			return NULL;
 		}
