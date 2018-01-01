@@ -21,17 +21,22 @@ namespace ofxJsonUI
 	SVG::SVG()
 	{
 		cache.svg = NULL;
-		Json::Value styleJson = Json::objectValue;
+		styleJson = Json::objectValue;
 		styleJson["stroke"] = true;
-		styleJson["strokeColor"] = "#FFFFFF 100%";
+		styleJson["stroke-color"] = "#FFFFFF 100%";
+		styleJson["stroke-width"] = 1;
 		styleJson["fill"] = false;
-		styleJson["fillColor"] = "#000000 100%";
+		styleJson["fill-color"] = "#000000 100%";
 		styleJson["units"] = "px";
 		styleJson["dpi"] = 96;
-		styleJson["size"] = Json::arrayValue;
-		styleJson["size"][0] = 100;
-		styleJson["size"][1] = 100;
-		SVG((Json::Value&)styleJson);
+		styleJson["scale"] = Json::arrayValue;
+		styleJson["scale"][0] = 1;
+		styleJson["scale"][1] = 1;
+		styleJson["anchor"] = Json::arrayValue;
+		styleJson["anchor"][0] = 0.5;
+		styleJson["anchor"][1] = 0.5;
+		styleJson["bezier"] = false;
+		setStyle(styleJson);
 	}
 
 	SVG::SVG(Json::Value& styleJson)
@@ -39,21 +44,25 @@ namespace ofxJsonUI
 		setStyle(styleJson);
 	}
 
-	void SVG::setStyle(Json::Value& styleJson)
+	void SVG::setStyle(Json::Value& newStyle)
 	{
+		ofxJsonParser::objectMerge(styleJson, newStyle);
+		
 		string styleName = ofxJsonParser::parseString(styleJson["style-name"]);
 		if (styleName != "") {
 			ofxJsonParser::objectMerge(styleJson, ofxJsonUI::getStyle(styleName));
 		}
 
 		style.bStroke = ofxJsonParser::parseBool(styleJson["stroke"]);
-		style.strokeColor = ofxJsonParser::parseColor(styleJson["strokeColor"], ofColor(255));
+		style.strokeColor = ofxJsonParser::parseColor(styleJson["stroke-color"], ofColor(255));
+		style.strokeWidth = ofxJsonParser::parseFloat(styleJson["stroke-width"], 1);
 		style.bFill = ofxJsonParser::parseBool(styleJson["fill"]);
-		style.fillColor = ofxJsonParser::parseColor(styleJson["fillColor"], ofColor(255));
-		style.size = ofxJsonParser::parseVector(styleJson["size"], ofVec2f(0,0));
-		setSize(style.size);
+		style.fillColor = ofxJsonParser::parseColor(styleJson["fill-color"], ofColor(255));
+		style.scale = ofxJsonParser::parseVector(styleJson["scale"], ofVec2f(1,1));
+		style.anchor = ofxJsonParser::parseVector(styleJson["anchor"], ofVec2f(0.5,0.5));
 		style.units = ofxJsonParser::parseString(styleJson["units"]);
 		style.dpi = ofxJsonParser::parseFloat(styleJson["dpi"]);
+		style.bBezier = ofxJsonParser::parseBool(styleJson["bezier"]);
 		
 		if (styleJson.isMember("file")) {
 			string filename = ofxJsonParser::parseString(styleJson["file"]);
@@ -86,15 +95,20 @@ namespace ofxJsonUI
 			return;
 		}
 		
+		ofPushMatrix();
+		ofScale(style.scale.x, style.scale.y);
+		ofTranslate(-style.anchor.x*cache.svg->width, -style.anchor.y*cache.svg->height);
 		ofxNanoVG::one().applyOFMatrix();
 		ofxNanoVG::one().beginPath();
-		ofxNanoVG::one().followSvg(cache.svg);
+		ofxNanoVG::one().followSvg(cache.svg, 0, 0, (style.bBezier?ofxNanoVG::SVG_BEZIER:ofxNanoVG::SVG_LINEAR));
 		if (style.bFill) {
 			ofxNanoVG::one().fillPath(style.fillColor);
 		}
 		if (style.bStroke) {
+			ofxNanoVG::one().setStrokeWidth(style.strokeWidth);
 			ofxNanoVG::one().strokePath(style.strokeColor);
 		}
+		ofPopMatrix();
 	}
 
 }

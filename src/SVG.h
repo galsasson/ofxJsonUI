@@ -21,20 +21,24 @@ namespace ofxJsonUI
 		~SVG();
 		SVG();
 		SVG(Json::Value& styleJson);
-		void setStyle(Json::Value& styleJson);
+		void setStyle(Json::Value& newStyle);
 		void setSVG(const string& svg);
 		virtual void update(float dt) override;
 		virtual void draw() override;
 
 	private:
+		Json::Value styleJson;
 		struct style_t {
 			bool bStroke;
 			ofColor strokeColor;
+			float strokeWidth;
 			bool bFill;
 			ofColor fillColor;
-			ofVec2f size;
+			ofVec2f scale;
 			string units;
 			float dpi;
+			ofVec2f anchor;
+			bool bBezier;
 		} style;
 		struct cache_t {
 			NSVGimage* svg;
