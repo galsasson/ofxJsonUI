@@ -14,7 +14,7 @@ namespace ofxJsonUI
 	{
 		bHaveContent = false;
 		pad = 128;
-		alpha = 1;
+		nodeColor = ofColor(255);
 		root = new Node();
 		root->setVisible(false);
 		addChild(root);
@@ -76,7 +76,7 @@ namespace ofxJsonUI
 
 	void Container::draw()
 	{
-		ofSetColor(255, alpha*255);
+		ofSetColor(nodeColor);
 		fbo.draw(-pad, -pad);
 	}
 }

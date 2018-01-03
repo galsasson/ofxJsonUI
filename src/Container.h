@@ -22,7 +22,6 @@ namespace ofxJsonUI
 		void setContent(Json::Value& cont);
 		Node* getNodeById(const string& id);
 		Container* getContainerById(const string& id);
-		float alpha;
 
 	private:
 		Node* root;
