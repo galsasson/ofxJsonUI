@@ -35,7 +35,8 @@ public:
 			return ofxAnimatable::calcCurveAt(t, type, params[0], params[1], params[2], params[3]);
 		}
 	};
-
+	
+	virtual ~AnimatableNode() {};
     AnimatableNode();
     void animatePositionTo(const ofVec3f& p, float duration, Curve curve = Curve(EASE_IN_EASE_OUT), float delay=0, const std::function<void(void)>& onEndFunc=[](){});
 	void stopPositionAnimation();
