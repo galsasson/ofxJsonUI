@@ -56,6 +56,20 @@ namespace ofxJsonUI
 		cache.bSizeNeedsUpdate = true;
 	}
 
+	void Text::setHeb(bool set)
+	{
+		if (style.isHeb == set)
+			return;
+
+		style.isHeb = set;
+		cache.bSizeNeedsUpdate;
+	}
+
+	void Text::setHAlign(const string& halign)
+	{
+		style.halign = (halign == "right") ? ofxNanoVG::NVG_ALIGN_RIGHT : (halign == "center") ? ofxNanoVG::NVG_ALIGN_CENTER : ofxNanoVG::NVG_ALIGN_LEFT;
+	}
+
 	void Text::setText(const string& str)
 	{
 		if (style.isHeb) {

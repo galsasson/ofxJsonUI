@@ -21,7 +21,9 @@ namespace ofxJsonUI
 		Text();
 		Text(Json::Value& styleJson);
 		void setStyle(Json::Value& styleJson);
+		void setHeb(bool set);
 		void setText(const string& str);
+		void setHAlign(const string& halign);
 		string& getText() { return text; }
 		void updateSize();
 		virtual void update(float dt) override;
