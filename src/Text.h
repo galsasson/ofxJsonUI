@@ -31,6 +31,7 @@ namespace ofxJsonUI
 		virtual void drawDebug() override;
 		virtual bool contains(const ofVec3f& p) override;
 
+		static string toHebrewParagraph(const string& str, int maxCharsPerLine=-1);
 	private:
 		string text;
 		struct style_t {
@@ -50,7 +51,6 @@ namespace ofxJsonUI
 			float xpos;
 			float ypos;
 		} cache;
-		string toHebrewParagraph(const string& str, int maxCharsPerLine);
 	};
 }
 #endif /* Text_h */
